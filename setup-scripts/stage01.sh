@@ -85,10 +85,12 @@ if [ -z "$NEW_HOSTNAME" ]; then
 		echo "input hostname:"
 		read NEW_HOSTNAME
 	else
-		echo "your name:"
+		echo "your name[yasuo]:"
 		read USER_NAME
-		NEW_HOSTNAME="$USER_NAME-$HWNAME"
-		echo "your hostname is $NEW_HOSTNAME"
+		[ -z "$USER_NAME" ] && USER_NAME=yasuo
+		echo "your PC name[$USER_NAME-$HWNAME]:"
+		read NEW_HOSTNAME
+		[ -z "$NEW_HOSTNAME" ] && NEW_HOSTNAME="$USER_NAME-$HWNAME"
 	fi
 fi
 export NEW_HOSTNAME
