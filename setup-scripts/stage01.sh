@@ -80,8 +80,16 @@ if [ -n "$BTRFS_OPTS" ]; then
 fi
 [ -z "$MOUNT_DIR" ] && MOUNT_DIR="/mnt"
 if [ -z "$NEW_HOSTNAME" ]; then
-	echo "input hostname:"
-	read NEW_HOSTNAME
+	HWNAME=`dmesg | sed -ne '/DMI/p' | sed -e '/^.*DMI: \(.*\), BIOS .*$/\1/' | tr '/ ' '_'`
+	if [ -z "$HWNAME" ]; then
+		echo "input hostname:"
+		read NEW_HOSTNAME
+	else
+		echo "your name:"
+		read USER_NAME
+		NEW_HOSTNAME="$USER_NAME-$HWNAME"
+		echo "your hostname is $NEW_HOSTNAME"
+	fi
 fi
 export NEW_HOSTNAME
 
