@@ -442,11 +442,21 @@ echo "$PART_SWAP	swap	swap	defaults	0	0" >> "$MOUNT_DIR/etc/fstab"
 
 cp "$SCRIPT_DIR/stage02.sh" "$MOUNT_DIR/stage02.sh"
 
+if [ "$ENCRYPT" = true ]; then
+	(
+		cd "$SCRIPT_DIR/chkboot"
+		makepkg -f
+		CHKBOOT_FNAME=`find . -name "*.tar.xz"`
+		cp "$CHKBOOT_FNAME" "$MOUNT_DIR/$CHKBOOT_FNAME"
+	)
+fi
+
 arch-chroot "$MOUNT_DIR" bash -c "/stage02.sh" || { 
 	echo "chroot error"
 	exit 1
 }
 rm "$MOUNT_DIR/stage02.sh"
+[ -n "$CHKBOOT_FNAME" ] && rm "$CHKBOOT_FNAME"
 
 if [ "$BOOTTYPE" = "efi" -o -n "$PART_BOOT" ]; then
 	umount "$MOUNT_DIR/boot"

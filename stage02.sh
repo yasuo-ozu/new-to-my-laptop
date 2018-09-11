@@ -56,6 +56,10 @@ cat<<HELPEOF
 HELPEOF
 }
 EOT
+	
+	CHKBOOT_FNAME=`find / -name "*.tar.xz"`
+	pacman -U "$CHKBOOT_FNAME"
+	systemctl enable chkboot
 fi
 echo "before pacman"
 sleep 10
