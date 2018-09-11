@@ -1,0 +1,3 @@
+[submodule "chkboot"]
+	path = chkboot
+	url = https://aur.archlinux.org/chkboot.git
