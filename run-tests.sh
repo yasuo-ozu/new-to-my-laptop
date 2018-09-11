@@ -35,7 +35,7 @@ expect \"#\"
 send \"cd /root/ntml\\n\"
 sleep 1
 expect \"#\"
-send \"./setup-scripts/stage01.sh test_config.conf || echo ERROR   DETECTED\\n\"
+send \"./stage01.sh test_config.conf || echo ERROR   DETECTED\\n\"
 sleep 1
 expect {
 	\"#\" {
