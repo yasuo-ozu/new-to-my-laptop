@@ -254,12 +254,12 @@ if [ "$BOOTTYPE" = "legacy" ]; then
 else
 	#UEFI-GPT
 	# EFI System Partition | main partition | swap
-	parted -s -a cylinder "$TARGET_DISK" ' mklabel gpt mkpart primary fat32 37s 192 name 1 "EFI System Partition" mkpart primary btrfs 193 -'`expr "$MEMTOTAL" '+' 1`' name 2 "Linux Filesystem" mkpart primary linux-swap -'$MEMTOTAL' 100% name 3 "Linux Swap" set 1 boot on set 1 esp on' || {
+	parted -s -a cylinder "$TARGET_DISK" ' mklabel gpt mkpart primary fat32 40s 393215s name 1 "EFI System Partition" mkpart primary btrfs 393216s -'`expr "$MEMTOTAL" '+' 1`' name 2 "Linux Filesystem" mkpart primary linux-swap -'$MEMTOTAL' 100% name 3 "Linux Swap" set 1 boot on set 1 esp on' || {
 		echo "parted error"
 		exit 1
 	}
 	if [ ! "$TARGET_DISK" = "$TARGET_DATA" ]; then
-		parted -s -a cylinder "$TARGET_DATA" ' mklabel gpt mkpart primary btrfs 37s 100% name 1 "Linux Filesystem"' || {
+		parted -s -a cylinder "$TARGET_DATA" ' mklabel gpt mkpart primary btrfs 40s 100% name 1 "Linux Filesystem"' || {
 			echo "parted error"
 			exit 1
 		}
