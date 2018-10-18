@@ -444,10 +444,12 @@ cp "$SCRIPT_DIR/stage02.sh" "$MOUNT_DIR/stage02.sh"
 
 if [ "$ENCRYPT" = true ]; then
 	(
+		useradd test
 		cd "$SCRIPT_DIR/chkboot"
-		makepkg -f
+		sudo -u test makepkg -f
 		CHKBOOT_FNAME=`find . -name "*.tar.xz"`
 		cp "$CHKBOOT_FNAME" "$MOUNT_DIR/$CHKBOOT_FNAME"
+		userdel test
 	)
 fi
 

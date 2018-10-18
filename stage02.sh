@@ -122,3 +122,5 @@ fi
 useradd -G wheel -m "$USER_NAME"
 /bin/echo -n "$USER_NAME:$PASSWORD" | chpasswd
 /bin/echo -n "root:$PASSWORD" | chpasswd
+echo "%wheel ALL=(ALL) ALL) >> /etc/sudoers
+
