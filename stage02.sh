@@ -105,7 +105,7 @@ EOT
 title	Arch Linux
 linux	/vmlinuz-linux
 initrd	/initramfs-linux.img
-options	root=/dev/mapper/part_linux rw rootflags=subvol=root/__active resume=/dev/mapper/part_swap
+options	root=$PART_LINUX rw rootflags=subvol=root/__active resume=$PART_SWAP
 EOT
 	if [ "$ENCRYPT" = true ]; then
 		sed -i -e 's/^options.*$/\0 cryptdevice=PARTUUID='$PARTUUID_LINUX_LOCKED':part_linux:allow-discards/' /boot/loader/entries/arch.conf
@@ -122,5 +122,5 @@ fi
 useradd -G wheel -m "$USER_NAME"
 /bin/echo -n "$USER_NAME:$PASSWORD" | chpasswd
 /bin/echo -n "root:$PASSWORD" | chpasswd
-echo "%wheel ALL=(ALL) ALL) >> /etc/sudoers
+echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 

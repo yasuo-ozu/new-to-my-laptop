@@ -6,7 +6,7 @@ default:
 	@echo "$(MAKE) sync ... update packages on the system."
 
 me:
-	./setup-scripts/stage01.sh
+	./stage01.sh
 
 sync:
 	ansible-playbook -i <(echo "localhost") -K exec.yml

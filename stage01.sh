@@ -441,6 +441,7 @@ sed -i -e '/swap/d' "$MOUNT_DIR/etc/fstab"
 echo "$PART_SWAP	swap	swap	defaults	0	0" >> "$MOUNT_DIR/etc/fstab"
 
 cp "$SCRIPT_DIR/stage02.sh" "$MOUNT_DIR/stage02.sh"
+chmod +x "$MOUNT_DIR/stage02.sh"
 
 if [ "$ENCRYPT" = true ]; then
 	(
@@ -453,23 +454,28 @@ if [ "$ENCRYPT" = true ]; then
 	)
 fi
 
+cleaning() {
+	rm "$MOUNT_DIR/stage02.sh"
+	[ -n "$CHKBOOT_FNAME" ] && rm "$CHKBOOT_FNAME"
+	if [ "$BOOTTYPE" = "efi" -o -n "$PART_BOOT" ]; then
+		umount "$MOUNT_DIR/boot"
+	fi
+	umount "$MOUNT_DIR/home/.snapshot"
+	umount "$MOUNT_DIR/home"
+	umount "$MOUNT_DIR/.snapshot"
+	umount "$MOUNT_DIR"
+	[ -n "$PART_LINUX_LOCKED" ] && cryptsetup close "part_linux"
+	[ -n "$PART_DATA_LOCKED" ] && cryptsetup close "part_data"
+	[ -n "$PART_SWAP_LOCKED" ] && cryptsetup close "part_swap"
+}
+
 arch-chroot "$MOUNT_DIR" bash -c "/stage02.sh" || { 
 	echo "chroot error"
+	cleaning
 	exit 1
 }
-rm "$MOUNT_DIR/stage02.sh"
-[ -n "$CHKBOOT_FNAME" ] && rm "$CHKBOOT_FNAME"
 
-if [ "$BOOTTYPE" = "efi" -o -n "$PART_BOOT" ]; then
-	umount "$MOUNT_DIR/boot"
-fi
-umount "$MOUNT_DIR/home/.snapshot"
-umount "$MOUNT_DIR/home"
-umount "$MOUNT_DIR/.snapshot"
-umount "$MOUNT_DIR"
-[ -n "$PART_LINUX_LOCKED" ] && cryptsetup close "part_linux"
-[ -n "$PART_DATA_LOCKED" ] && cryptsetup close "part_data"
-[ -n "$PART_SWAP_LOCKED" ] && cryptsetup close "part_swap"
+cleaning
 
 echo "install is finished."
 
