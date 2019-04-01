@@ -19,7 +19,7 @@ echo "127.0.1.1	$NEW_HOSTNAME.localdomain	$NEW_HOSTNAME" >> /etc/hosts
 
 # hooks resume mdadm
 sed -i -e 's/^\(HOOKS=.*filesystems\)\(.*\)$/\1 resume\2/' /etc/mkinitcpio.conf
-[ -n "$ENCRYPT" ] && sed -i -e 's/^\(HOOKS=.*block\)\(.*\)$/\1 keymap encrypt openswap\2/' /etc/mkinitcpio.conf
+[ "$ENCRYPT" = true ] && sed -i -e 's/^\(HOOKS=.*block\)\(.*\)$/\1 keymap encrypt openswap\2/' /etc/mkinitcpio.conf
 
 if echo "$TARGET_DISK$TARGET_DATA" | grep -q "md" &> /dev/null; then
 	sed -i -e 's/^\(HOOKS=.*\)\(filesystems.*\)$/\1mdadm_udev \2/' /etc/mkinitcpio.conf
