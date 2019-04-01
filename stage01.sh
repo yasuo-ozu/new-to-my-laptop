@@ -109,7 +109,7 @@ fi
 export PASSWORD
 
 if [ -z "$NEW_HOSTNAME" ]; then
-	HWNAME=`dmesg | sed -ne '/DMI/p' | sed -e 's/^.*DMI: \(.*\), BIOS .*$/\1/' | tr '/ ' '_'`
+	HWNAME=`dmesg | sed -ne '/DMI/p' | sed -e 's/^.*DMI: \([^,.]*\).*$/\1/' | tr '/ ' '_'`
 	if [ -z "$HWNAME" ]; then
 		echo "input hostname:"
 		read NEW_HOSTNAME
