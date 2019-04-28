@@ -63,7 +63,7 @@ EOT
 fi
 echo "before pacman"
 sleep 10
-pacman --noconfirm -S btrfs-progs
+pacman --noconfirm -S btrfs-progs dialog git wpa_supplicant
 echo "after pacman"
 sleep 10
 mkinitcpio -p linux
